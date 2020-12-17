@@ -5,12 +5,14 @@ from ..serializers import ProgramPaymentSerialiezr
 import requests
 import json
 from ..models import ProgramRecord
-front_site = 'http://localhost:8080/'
+front_site = 'https://k3c202.p.ssafy.io/'
 class KakaoPay(APIView):
     # 카카오 페이 결제 준비 단계
     def post(self, request):
         program_id = request.POST.get('program_id')
         price_id = request.POST.get('price_id')
+        print(program_id,price_id,'----')
+        print(front_site)
         url = "https://kapi.kakao.com"
         headers = {
             'Authorization': "KakaoAK " + "19ec65168ecd5968e1f8e5eca0a3ea3c",
@@ -33,7 +35,9 @@ class KakaoPay(APIView):
             # 결제취소했을때
             'cancel_url': f'{front_site}cancel/',
         }
+        print(params,'params')
         response = requests.post(url+"/v1/payment/ready", params=params, headers=headers)
+        print(response,'response')
         response = json.loads(response.text)
         return Response(response)
 
